@@ -1,7 +1,7 @@
 ﻿using Core.Entities;
+using Core.Interface;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -9,16 +9,16 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class ResourcesController : ControllerBase
     {
-        private readonly ApplicationContext _context;
+        private readonly IResourceRepository _repository;
 
-        public ResourcesController(ApplicationContext context)
+        public ResourcesController(IResourceRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
         [HttpGet]
         public async Task<ActionResult<List<Resource>>> GetResources()
         {
-            var resources = await _context.Resources.ToListAsync();
+            var resources = await _repository.GetResourcesAsync();
 
             return resources;
         }
@@ -26,7 +26,7 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Resource>> GetResource(int id)
         {
-            var resource = await _context.Resources.FindAsync(id);
+            var resource = await _repository.GetResourcesByIdAsync(id);
 
             return resource;
         }

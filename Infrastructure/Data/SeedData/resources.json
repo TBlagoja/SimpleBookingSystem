@@ -1,0 +1,14 @@
+[
+  {
+    "Name": "Resource1",
+    "Quantity": 5
+  },
+  {
+    "Name": "Resource2",
+    "Quantity": 4
+  },
+  {
+    "Name": "Resource3",
+    "Quantity": 3
+  }
+]
