@@ -1,34 +1,40 @@
-﻿using Core.Entities;
+﻿using API.Dtos;
+using API.Errors;
+using AutoMapper;
+using Core.Entities;
 using Core.Interface;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ResourcesController : ControllerBase
+    public class ResourcesController : BaseApiController
     {
-        private readonly IResourceRepository _repository;
+        private readonly IGenericRepository<Resource> _repository;
+        private readonly IMapper _mapper;
 
-        public ResourcesController(IResourceRepository repository)
+        public ResourcesController(IGenericRepository<Resource> repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
         [HttpGet]
-        public async Task<ActionResult<List<Resource>>> GetResources()
+        public async Task<ActionResult<List<ResourceToReturnDto>>> GetResources()
         {
-            var resources = await _repository.GetResourcesAsync();
+            var resources = await _repository.ListAllAsync();
 
-            return resources;
+            return _mapper.Map<List<Resource>, List<ResourceToReturnDto>>(resources);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Resource>> GetResource(int id)
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ResourceToReturnDto>> GetResource(int id)
         {
-            var resource = await _repository.GetResourcesByIdAsync(id);
+            var resource = await _repository.GetByIdAsync(id);
 
-            return resource;
+            if(resource == null) return NotFound(new ApiResponse(404));
+
+            return _mapper.Map<Resource, ResourceToReturnDto>(resource);
         }
     }
 }
