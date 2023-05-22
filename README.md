@@ -5,6 +5,6 @@ To start the API:
 
 
 To start the client side APP:
-- navigate to 'folderName'
+- navigate to client folder
 - npm install
 - npm run start (or ng serve)
