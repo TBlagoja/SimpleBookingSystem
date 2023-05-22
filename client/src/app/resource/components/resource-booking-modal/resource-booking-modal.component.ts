@@ -48,7 +48,8 @@ export class ResourceBookingModalComponent implements OnInit {
 
       this.resourceService.bookResource(booking).subscribe({
         next: (response) => {
-          this.toastrService.success("You have succesfuly booked your resource")
+          this.toastrService.success("You have succesfuly booked your resource");
+          this.dialogRef.close();
         },
         error: (error) => {
           this.toastrService.error(error.error.validationErrorMessage)

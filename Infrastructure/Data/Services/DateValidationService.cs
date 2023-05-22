@@ -1,5 +1,4 @@
 ﻿using Core.Entities;
-using Core.Helpers;
 using Core.Interface;
 using Infrastructure.Data.Helpers;
 using Microsoft.EntityFrameworkCore;
@@ -52,7 +51,6 @@ namespace Infrastructure.Data.Services
                         ValidationErrorMessage = "There is not enough quantity for resource"
                     };
                 }
-
             }
             else
             {

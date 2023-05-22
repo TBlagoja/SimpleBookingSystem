@@ -13,16 +13,19 @@ namespace API.Controllers
         private readonly IGenericRepository<Booking> _bookingRepository;
         private readonly IMapper _mapper;
         private readonly IDateValidationService _validationService;
+        private readonly IEmailService _emailService;
 
         public ResourcesController(IGenericRepository<Resource> resourceRepository,
                                    IGenericRepository<Booking> bookingRepository,
                                    IMapper mapper,
-                                   IDateValidationService validationService)
+                                   IDateValidationService validationService,
+                                   IEmailService emailService)
         {
             _resourceRepository = resourceRepository;
             _bookingRepository = bookingRepository;
             _mapper = mapper;
             _validationService = validationService;
+            _emailService = emailService;
         }
         [HttpGet]
         public async Task<ActionResult<List<ResourceToReturnDto>>> GetResources()
@@ -44,15 +47,17 @@ namespace API.Controllers
         }
 
         [HttpPost("book")]
-        public async Task<ActionResult<Booking>> AddBooking(Booking booking)
+        public async Task<ActionResult<Booking>> AddBooking(BookingToAddDto booking)
         {
-            //var bookingToAdd = _mapper.Map<BookingToAddDto, Booking>(booking);
+            var bookingToAdd = _mapper.Map<BookingToAddDto, Booking>(booking);
 
-            var validationResponse = await _validationService.ValidateDate(booking);
+            var validationResponse = await _validationService.ValidateDate(bookingToAdd);
 
             if (validationResponse.IsValid)
             {
-                var addedBooking = await _bookingRepository.AddAsync(booking);
+                var addedBooking = await _bookingRepository.AddAsync(bookingToAdd);
+
+                if(addedBooking != null) await _emailService.SendEmail(addedBooking);
 
                 return Ok(addedBooking ?? new Booking());
             }

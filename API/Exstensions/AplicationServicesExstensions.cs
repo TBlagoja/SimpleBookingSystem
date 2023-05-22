@@ -21,6 +21,7 @@ namespace API.Exstensions
             });
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IDateValidationService, DateValidationService>();
+            services.AddScoped<IEmailService, EmailService>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddCors(options =>
             {
