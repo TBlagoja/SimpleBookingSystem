@@ -1,0 +1,23 @@
+<h2 style="margin-bottom: 50px;">Booking {{data.name}}</h2>
+
+<div [formGroup]="form" style="height: 400px;">
+    <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Date from" formControlName="dateFrom">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker1" placeholder="Date to" formControlName="dateTo">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput type="number" formControlName="quantity" placeholder="Enter a number" [(ngModel)]="data.quantity">
+      </mat-form-field>
+  </div>
+
+
+<button style="border: 2px solid #ccc;" mat-button (click)="close()">Close</button>
+<button style="border: 2px solid #ccc;" mat-button (click)="submitForm()">Book</button>

@@ -29,6 +29,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseCors("AllowOrigin");
+
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 var context = services.GetRequiredService<ApplicationContext>();
